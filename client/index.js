@@ -11,13 +11,16 @@ import actionToRegister from 'actions/serverAction'
   state: state
 }))
 export default class MyComponent extends Component {
+  onButtonClick = () => {
+    actionToRegister.dispatch({id: 1})
+  }
   render () {
     console.log('Rendering MyComponent', this.props)
     const {counter} = this.props
     return (
       <div>
-        Counter: <span>{counter}</span>
-        <button onClick={actionToRegister.dispatch}>Trigger server action</button>
+        <span>Counter: {counter}</span>
+        <button onClick={this.onButtonClick}>Trigger server action</button>
       </div>
     )
   }
