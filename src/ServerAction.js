@@ -8,7 +8,7 @@ export default class ServerAction {
     this.serve = opts.serve
   }
 
-  generateReducers () {
+  generateReducers = () => {
     let reducers = {}
     reducers[this.name + '_REQUEST'] = {
       reducer: this.onLoad,
@@ -27,7 +27,7 @@ export default class ServerAction {
 
   dispatch = (data) => {
     if (!this._dispatch) {
-      console.error('No dispatch method has been registered')
+      console.error('No dispatch method has been registered', this)
     }
     const _d = this._dispatch
     _d({

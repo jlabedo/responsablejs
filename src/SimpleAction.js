@@ -6,7 +6,7 @@ export default class ServerAction {
     this.initialState = opts.initialState
   }
 
-  generateReducers () {
+  generateReducers = () => {
     let self = this
     return {
       [this.name]: {
@@ -16,9 +16,9 @@ export default class ServerAction {
     }
   }
 
-  dispatch (data) {
+  dispatch = (data) => {
     if (!this._dispatch) {
-      console.error('No dispatch method has been registered')
+      console.error('No dispatch method has been registered', this)
     }
     this._dispatch({
       type: this.name

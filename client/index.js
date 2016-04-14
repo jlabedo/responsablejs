@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import framework from 'src/FrameworkClient'
 import RestApi from 'src/backend/RestApi'
 import actionToRegister from 'actions/serverAction'
-// import simpleAction from 'actions/simple'
+import simpleAction from 'actions/simple'
 
 @connect((state) => ({
   counter: framework.getState(state).counter,
@@ -25,8 +25,4 @@ export default class MyComponent extends Component {
   }
 }
 RestApi.baseUrl = '/api'
-// framework.register(simpleAction)
-// framework.register(actionToRegister)
-// framework.render(<MyComponent/>)
-
-// setInterval(() => simpleAction.dispatch(), 10000);
+setInterval(simpleAction.dispatch, 1000)
