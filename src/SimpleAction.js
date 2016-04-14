@@ -21,7 +21,8 @@ export default class ServerAction {
       console.error('No dispatch method has been registered', this)
     }
     this._dispatch({
-      type: this.name
+      type: this.name,
+      data
     })
   }
 }

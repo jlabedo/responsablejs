@@ -15,11 +15,11 @@ export default class ServerAction {
       stateAccessor: this.stateAccessor
     }
     reducers[this.name + '_SUCCESS'] = {
-      reducer: this.onSuccess,
+      reducer: (state, action) => this.onSuccess(state, action.result),
       stateAccessor: this.stateAccessor
     }
     reducers[this.name + '_FAILURE'] = {
-      reducer: this.onFail,
+      reducer: (state, action) => this.onFail(state, action.error),
       stateAccessor: this.stateAccessor
     }
     return reducers

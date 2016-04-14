@@ -5,6 +5,6 @@ const counter = new StateAccessor('counter', 0)
 
 export default new SimpleAction({
   name: 'INCREMENT',
-  reducer: (state = 0) => state + 1,
+  reducer: (state, action) => state + 1,
   stateAccessor: counter
 })

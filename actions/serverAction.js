@@ -7,9 +7,9 @@ const widgets = new StateAccessor('widgets', {})
 export default new ServerAction({
   name: 'ActionTest1',
   stateAccessor: widgets,
-  onLoad: (state, data) => ({...state, loading: true}),
-  onSuccess: (state, data) => ({...state, loading: false, results: data}),
-  onFail: (state) => ({...state, loading: false, error: true}),
+  onLoad: (state, action) => ({...state, loading: true}),
+  onSuccess: (state, result) => ({...state, loading: false, results: result}),
+  onFail: (state, error) => ({...state, loading: false, error: true}),
   serve: RestApi.get('/test/:id', (data) => ({ id: data.id }), (req, res) => {
     res.send('Response from actionToRegister (direct)')
   })
