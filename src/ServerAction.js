@@ -4,8 +4,7 @@ export default class ServerAction {
     this.onLoad = opts.onLoad;
     this.onSuccess = opts.onSuccess;
     this.onFail = opts.onFail;
-    this.stateKey = opts.stateKey;
-    this.initialState = opts.initialState;
+    this.stateAccessor = opts.stateAccessor;
     this.serve = opts.serve;
   }
 
@@ -13,30 +12,34 @@ export default class ServerAction {
     let reducers = {};
     reducers[this.name + '_REQUEST'] = {
       reducer: this.onLoad,
-      stateKey : this.stateKey
+      stateAccessor : this.stateAccessor
     };
     reducers[this.name + '_SUCCESS'] = {
       reducer: this.onSuccess,
-      stateKey : this.stateKey
+      stateAccessor : this.stateAccessor
     };
     reducers[this.name + '_FAILURE'] = {
       reducer: this.onFail,
-      stateKey : this.stateKey
+      stateAccessor : this.stateAccessor
     };
     return reducers;
   }
 
-  dispatch(_dispatch, data) {
-    _dispatch({
+  dispatch = (data) => {
+    if(!this._dispatch) {
+      console.error('No dispatch method has been registered');
+    }
+    const _d = this._dispatch;
+    _d({
       type: this.name + '_REQUEST',
       data
     });
-    this.backendLoad(data).then(
-      (result) => _dispatch({type: this.name + '_SUCCESS'}),
-      (error) => _dispatch({type: this.name + '_FAILURE'})
+    this.serve(data).then(
+      (result) => _d({type: this.name + '_SUCCESS', result}),
+      (error) => _d({type: this.name + '_FAILURE', error})
     ).catch((error)=> {
       console.error('ServerAction ERROR:', error);
-      _dispatch({type: this.name + '_FAILURE'});
+      _d({type: this.name + '_FAILURE', error});
     });
   }
 }
