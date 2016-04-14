@@ -16,8 +16,15 @@ export default class StateAccessor {
     }
   }
 
+  defaultState (state) {
+    if (state[this.key] === undefined) {
+      return {...state, [this.key]: this.initialValue}
+    } else {
+      return state
+    }
+  }
+
   init (state) {
-    this.initialized = true
     return this.updateState(state, this.initialValue)
   }
 }

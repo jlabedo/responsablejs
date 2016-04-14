@@ -15,7 +15,6 @@ export default class MyComponent extends Component {
     actionToRegister.dispatch({id: 1})
   }
   render () {
-    console.log('Rendering MyComponent', this.props)
     const {counter} = this.props
     return (
       <div>
