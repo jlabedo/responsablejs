@@ -2,6 +2,7 @@
   "parser": "babel-eslint",
   "extends": ["standard", "standard-react"],
   "globals": {
-    "__MAIN_COMPONENT_MODULE__": true
+    "__MAIN_COMPONENT_MODULE__": true,
+    "SERVER": true
   }
 }

@@ -10,7 +10,7 @@ export default new ServerAction({
   onLoad: (state, action) => ({...state, loading: true}),
   onSuccess: (state, result) => ({...state, loading: false, results: result}),
   onFail: (state, error) => ({...state, loading: false, error: true}),
-  serve: RestApi.get('/test/:id', (data) => ({ id: data.id }), (req, res) => {
+  serve: RestApi.get('/test/:id', (data) => ({ id: data.id }), SERVER((req, res) => {
     res.send('Response from actionToRegister (direct)')
-  })
+  }))
 })

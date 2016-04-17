@@ -106,7 +106,7 @@ export default class Framework {
               q('react-hot'),
               q('babel', {
                 cacheDirectory: true,
-                plugins: ['transform-decorators-legacy', 'transform-runtime'],
+                plugins: ['transform-decorators-legacy', 'transform-runtime', path.join(__dirname, '/babel-plugin-remove-server-code')],
                 presets: ['es2015', 'react', 'stage-0']
               })
             ]
