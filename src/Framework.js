@@ -1,6 +1,7 @@
 var express = require('express')
 var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
+var webpackHotMiddleware = require('webpack-hot-middleware')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 import path from 'path'
 
@@ -19,6 +20,10 @@ function stringify (obj) {
   })
   return json
 };
+
+function q (loader, query) {
+  return loader + '?' + JSON.stringify(query)
+}
 
 export default class Framework {
   constructor () {
@@ -74,7 +79,11 @@ export default class Framework {
     const publicPath = 'http://localhost:3000/'
     const app = this.app = express()
     const compiler = webpack({
-      entry: path.join(__dirname, 'frontend-main.js'),
+      entry: [
+        'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
+        'webpack/hot/only-dev-server',
+        path.join(__dirname, 'frontend-main.js')
+      ],
       output: {
         path: '/dist/',
         publicPath: publicPath,
@@ -93,17 +102,20 @@ export default class Framework {
           {
             test: /\.jsx?$/,
             exclude: /(node_modules|bower_components)/,
-            loader: 'babel',
-            query: {
-              cacheDirectory: true,
-              plugins: ['transform-decorators-legacy', 'transform-runtime'],
-              presets: ['es2015', 'react', 'stage-0']
-            }
+            loaders: [
+              q('react-hot'),
+              q('babel', {
+                cacheDirectory: true,
+                plugins: ['transform-decorators-legacy', 'transform-runtime'],
+                presets: ['es2015', 'react', 'stage-0']
+              })
+            ]
           }
         ]
       },
       plugins: [
         new HtmlWebpackPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
         new webpack.ProvidePlugin({'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'}),
         new webpack.DefinePlugin({
           __CLIENT__: true,
@@ -119,6 +131,7 @@ export default class Framework {
       publicPath: publicPath,
       stats: true
     }))
+    app.use(webpackHotMiddleware(compiler))
 
     app.listen(3000, () => {
       console.log('listening on 3000')
