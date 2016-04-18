@@ -1,4 +1,4 @@
-export default class ServerAction {
+export default class SimpleAction {
   constructor (opts) {
     this.name = opts.name
     this.reducer = opts.reducer
