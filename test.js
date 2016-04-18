@@ -1,9 +1,10 @@
-// import path from 'path'
+import path from 'path'
 import Framework from './src/Framework'
 // import { actionToRegister } from './actions/serverAction'
-import registerActions from './actions'
+// import registerActions from './actions'
 
 const framework = new Framework()
 
-registerActions(framework)
-framework.serve('client/index.js')
+// registerActions(framework)
+// framework.registerActionsDirectory('./actions')
+framework.serve(path.join(__dirname, 'client'), path.join(__dirname, 'actions'))

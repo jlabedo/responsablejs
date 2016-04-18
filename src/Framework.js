@@ -75,7 +75,11 @@ export default class Framework {
     console.log(code)
   }
 
-  serve (entryPoint) {
+  serve (entryPoint, actionsModule) {
+    global.SERVER = function (arg) { return arg }
+    const registerActions = require(actionsModule).default
+    registerActions(this)
+    delete global.SERVER
     const publicPath = 'http://localhost:3000/'
     const app = this.app = express()
     const compiler = webpack({
@@ -91,14 +95,16 @@ export default class Framework {
       },
       resolve: {
         // root: path.resolve(__dirname),
-        alias: {'src/backend': 'src/backend-client', 'MAIN_COMPONENT_MODULE': entryPoint},
+        alias: {
+          'src/backend': 'src/backend-client',
+          'MAIN_COMPONENT_MODULE': entryPoint,
+          'ACTIONS_MODULE': actionsModule
+        },
         modulesDirectories: ['.', 'node_modules'],
         extensions: ['', '.js', '.jsx']
       },
       module: {
         loaders: [
-          // the optional 'runtime' transformer tells babel to require the runtime
-          // instead of inlining it.
           {
             test: /\.jsx?$/,
             exclude: /(node_modules|bower_components)/,
