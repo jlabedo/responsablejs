@@ -4,7 +4,6 @@ export default function ({types: t}) {
       CallExpression: function CallExpression (path) {
         if (t.isIdentifier(path.node.callee) && path.node.callee.name === 'SERVER') {
           path.replaceWith(t.Identifier('undefined'))
-          // path.remove()
         }
       }
     }

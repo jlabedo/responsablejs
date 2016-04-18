@@ -1,12 +1,16 @@
 export default class ServerAction {
   constructor (opts) {
     this.name = opts.name
-    this.onLoad = opts.onLoad
-    this.onSuccess = opts.onSuccess
-    this.onFail = opts.onFail
+    if (opts.onLoad) this.onLoad = opts.onLoad
+    if (opts.onSuccess) this.onSuccess = opts.onSuccess
+    if (opts.onFail) this.onFail = opts.onFail
     this.stateAccessor = opts.stateAccessor
     this.serve = opts.serve
   }
+
+  onLoad = (state, action) => ({...state, loading: true})
+  onSuccess = (state, result) => ({...state, loading: false, results: result})
+  onFail = (state, error) => ({...state, loading: false, error: true})
 
   generateReducers = () => {
     let reducers = {}

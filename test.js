@@ -1,5 +1,5 @@
 import path from 'path'
-import Framework from './src/Framework'
+import Framework from './lib/Framework'
 // import { actionToRegister } from './actions/serverAction'
 // import registerActions from './actions'
 

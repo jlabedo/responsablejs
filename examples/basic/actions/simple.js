@@ -1,5 +1,5 @@
-import SimpleAction from '../src/SimpleAction'
-import StateAccessor from '../src/StateAccessor'
+import SimpleAction from 'src/SimpleAction'
+import StateAccessor from 'src/StateAccessor'
 
 const counter = new StateAccessor('counter', 0)
 

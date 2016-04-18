@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-// import framework from './framework-client-static';
 import framework from 'src/FrameworkClient'
 import RestApi from 'src/backend/RestApi'
 
-import actionToRegister from 'actions/serverAction'
-import simpleAction from 'actions/simple'
+import actionToRegister from '../actions/serverAction'
+import simpleAction from '../actions/simple'
 import SayCoucou from './StaticComponent'
 
 @connect((state) => ({
