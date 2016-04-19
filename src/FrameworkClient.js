@@ -5,6 +5,7 @@ import { createStore as _createStore, combineReducers } from 'redux'
 
 export default {
   storeKey: 'framework',
+  externalReducers: {},
   actions: [],
 
   createStore: function (initialState) {
@@ -16,9 +17,7 @@ export default {
 
     const reducer = this.getReducerFromMap(reducerMap)
 
-    let finalReducer = combineReducers({
-      [this.storeKey]: reducer
-    })
+    let finalReducer = combineReducers({...this.externalReducers, [this.storeKey]: reducer})
     this.store = _createStore(finalReducer, initialState, window.devToolsExtension ? window.devToolsExtension() : undefined)
     return this.store
   },

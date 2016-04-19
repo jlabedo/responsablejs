@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-// import framework from 'src/FrameworkClient'
+import framework from 'src/FrameworkClient'
 import RestApi from 'src/backend/RestApi'
 
 import serverAction from '../actions/serverAction'
 import simpleAction, { accessor as counter} from '../actions/simple'
 import SayCoucou from './StaticComponent'
+
+import customReducer from './customReducer'
+
+framework.externalReducers = {
+  custom: customReducer
+}
 
 @connect((state) => ({
   counter: counter.getFromGlobalState(state),
