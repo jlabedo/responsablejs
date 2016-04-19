@@ -17,21 +17,21 @@ export default {
     const reducer = this.getReducerFromMap(reducerMap)
 
     let finalReducer = combineReducers({
-      framework: reducer
+      [this.storeKey]: reducer
     })
     this.store = _createStore(finalReducer, initialState, window.devToolsExtension ? window.devToolsExtension() : undefined)
     return this.store
   },
 
   getReducerFromMap: function (reducerMap) {
-    function defaultState (state) {
+    const defaultState = (state) => {
       let uniqueAccessors = []
       Object.keys(reducerMap).forEach((key) => {
         let accessor = reducerMap[key].stateAccessor
         if (uniqueAccessors.indexOf(accessor) === -1) {
           uniqueAccessors.push(accessor)
           state = accessor.defaultState(state)
-          accessor.mapToGlobalState((globalState) => globalState.framework)
+          accessor.mapToGlobalState((globalState) => globalState[this.storeKey])
         }
       })
       return state
@@ -49,7 +49,7 @@ export default {
     }
   },
 
-  getState: (state) => state.framework,
+  getState: (state) => state[this.storeKey],
 
   register: function (action) {
     const self = this
