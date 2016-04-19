@@ -1,7 +1,8 @@
 {
-  "name": "ResponsableJS",
+  "name": "responsable",
   "version": "0.0.1",
   "description": "A framework using React and Redux to rapidly develop web applications",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d lib"
