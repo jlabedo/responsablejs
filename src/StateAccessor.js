@@ -8,6 +8,14 @@ export default class StateAccessor {
     return state[this.key] || this.initialValue
   }
 
+  getFromGlobalState (globalState) {
+    if (this.mapToGlobalState) {
+      return this.getState(this.mapToGlobalState(globalState))
+    } else {
+      return this.getState(globalState)
+    }
+  }
+
   updateState (state, newValue) {
     if (state[this.key] !== newValue) {
       return {...state, [this.key]: newValue}
@@ -26,5 +34,9 @@ export default class StateAccessor {
 
   init (state) {
     return this.updateState(state, this.initialValue)
+  }
+
+  mapToGlobalState (map) {
+    this.mapToGlobalState = map
   }
 }

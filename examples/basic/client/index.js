@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import framework from 'src/FrameworkClient'
+// import framework from 'src/FrameworkClient'
 import RestApi from 'src/backend/RestApi'
 
-import actionToRegister from '../actions/serverAction'
-import simpleAction from '../actions/simple'
+import serverAction from '../actions/serverAction'
+import simpleAction, { accessor as counter} from '../actions/simple'
 import SayCoucou from './StaticComponent'
 
 @connect((state) => ({
-  counter: framework.getState(state).counter,
+  counter: counter.getFromGlobalState(state),
   state: state
 }))
 export default class MyComponent extends Component {
   onButtonClick = () => {
-    actionToRegister.dispatch({id: 1})
+    serverAction.dispatch({id: 1})
   }
   render () {
     const {counter} = this.props

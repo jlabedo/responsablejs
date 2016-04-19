@@ -19,6 +19,7 @@ export default class SimpleAction {
   dispatch = (data) => {
     if (!this._dispatch) {
       console.error('No dispatch method has been registered', this)
+      return
     }
     this._dispatch({
       type: this.name,

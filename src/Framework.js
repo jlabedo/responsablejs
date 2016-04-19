@@ -4,6 +4,7 @@ var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 import path from 'path'
+import invariant from 'invariant'
 
 function stringify (obj) {
   var placeholder = '____PLACEHOLDER____'
@@ -75,12 +76,17 @@ export default class Framework {
     console.log(code)
   }
 
-  serve (entryPoint, actionsModule) {
-    global.SERVER = function (arg) { return arg }
-    const registerActions = require(actionsModule).default
-    registerActions(this)
-    delete global.SERVER
-    const publicPath = 'http://localhost:3000/'
+  serve (opts) {
+    // const { port = 3000 } = opts
+    const port = 3000
+    invariant(opts.entryPoint, 'An entryPoint must be passed to Framework.serve function')
+    if (opts.actions) {
+      global.SERVER = function (arg) { return arg }
+      const registerActions = require(opts.actions).default
+      registerActions(this)
+      delete global.SERVER
+    }
+    const publicPath = `http://localhost:${port}/`
     const app = this.app = express()
     const compiler = webpack({
       entry: [
@@ -97,8 +103,8 @@ export default class Framework {
         // root: path.resolve(__dirname),
         alias: {
           'src/backend': 'src/backend-client',
-          'MAIN_COMPONENT_MODULE': entryPoint,
-          'ACTIONS_MODULE': actionsModule
+          'MAIN_COMPONENT_MODULE': opts.entryPoint,
+          'ACTIONS_MODULE': opts.actions ? opts.actions : path.join(__dirname, '/emptyActionsModule.js')
         },
         modulesDirectories: ['.', 'node_modules'],
         extensions: ['', '.js', '.jsx']
@@ -139,8 +145,8 @@ export default class Framework {
     }))
     app.use(webpackHotMiddleware(compiler))
 
-    app.listen(3000, () => {
-      console.log('listening on 3000')
+    app.listen(port, () => {
+      console.log('listening on ' + port)
     })
   }
 }

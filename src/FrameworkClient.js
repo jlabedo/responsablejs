@@ -31,6 +31,7 @@ export default {
         if (uniqueAccessors.indexOf(accessor) === -1) {
           uniqueAccessors.push(accessor)
           state = accessor.defaultState(state)
+          accessor.mapToGlobalState((globalState) => globalState.framework)
         }
       })
       return state
