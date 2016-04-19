@@ -1,3 +1,3 @@
 'use strict'
 
-module.exports = require('./lib/Framework')
+module.exports = require('./lib/Framework').default
