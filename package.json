@@ -1,13 +1,12 @@
 {
-  "name": "react-framework",
-  "version": "1.0.0",
-  "description": "A react (maybe redux is better) complete framework",
-  "main": "main.js",
+  "name": "ResponsableJS",
+  "version": "0.0.1",
+  "description": "A framework using React and Redux to rapidly develop web applications",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d lib"
   },
-  "author": "Jean",
+  "author": "Jean de La Bédoyère",
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
