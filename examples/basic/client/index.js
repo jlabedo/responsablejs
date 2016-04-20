@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import framework from 'src/FrameworkClient'
+import framework from 'responsable'
 import RestApi from 'src/backend/RestApi'
 
 import serverAction from '../actions/serverAction'

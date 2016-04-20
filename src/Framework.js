@@ -87,8 +87,7 @@ export default class Framework {
       delete global.SERVER
     }
     const publicPath = `http://localhost:${port}/`
-    const app = this.app = express()
-    const compiler = webpack({
+    let webpackOptions = {
       entry: [
         'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
         'webpack/hot/only-dev-server',
@@ -103,6 +102,7 @@ export default class Framework {
         // root: path.resolve(__dirname),
         alias: {
           'src/backend': 'src/backend-client',
+          'responsable$': path.join(__dirname, './FrameworkClient.js'),
           'MAIN_COMPONENT_MODULE': opts.entryPoint,
           'ACTIONS_MODULE': opts.actions ? opts.actions : path.join(__dirname, '/emptyActionsModule.js')
         },
@@ -122,7 +122,12 @@ export default class Framework {
                 presets: ['es2015', 'react', 'stage-0']
               })
             ]
-          }
+          },
+          { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
+          { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
+          { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
+          { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
+          { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
         ]
       },
       plugins: [
@@ -136,7 +141,13 @@ export default class Framework {
           __DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
         })
       ]
-    })
+    }
+
+    if (opts.config && opts.config instanceof Function) {
+      opts.config(webpackOptions)
+    }
+    const app = this.app = express()
+    const compiler = webpack(webpackOptions)
 
     app.use('/api', this.router)
     app.use(webpackDevMiddleware(compiler, {
