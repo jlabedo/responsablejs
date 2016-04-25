@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore as _createStore, combineReducers } from 'redux'
+import DevTools from './DevTools'
 
 export default {
   storeKey: 'framework',
@@ -18,7 +19,10 @@ export default {
     const reducer = this.getReducerFromMap(reducerMap)
 
     let finalReducer = combineReducers({...this.externalReducers, [this.storeKey]: reducer})
-    this.store = _createStore(finalReducer, initialState, window.devToolsExtension ? window.devToolsExtension() : undefined)
+    this.store = _createStore(finalReducer, initialState, DevTools.instrument())
+    if (this.onStoreCreation) {
+      this.onStoreCreation(this.store)
+    }
     return this.store
   },
 
@@ -62,7 +66,10 @@ export default {
 
     ReactDOM.render(
       <Provider store={this.createStore()} key='provider'>
-        {component}
+        <div>
+          {component}
+          <DevTools />
+        </div>
       </Provider>
     , root)
   }

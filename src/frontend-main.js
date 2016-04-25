@@ -6,4 +6,8 @@ import MainComponent from 'MAIN_COMPONENT_MODULE'
 // Register actions
 registerActions(framework)
 
-framework.render(<MainComponent />)
+if (React.isValidElement(MainComponent)) {
+  framework.render(MainComponent)
+} else {
+  framework.render(<MainComponent />)
+}

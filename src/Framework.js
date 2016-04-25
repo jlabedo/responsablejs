@@ -77,8 +77,7 @@ export default class Framework {
   }
 
   serve (opts) {
-    // const { port = 3000 } = opts
-    const port = 3000
+    const { port = 3000 } = opts
     invariant(opts.entryPoint, 'An entryPoint must be passed to Framework.serve function')
     if (opts.actions) {
       global.SERVER = function (arg) { return arg }
@@ -89,7 +88,7 @@ export default class Framework {
     const publicPath = `http://localhost:${port}/`
     let webpackOptions = {
       entry: [
-        'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
+        `webpack-hot-middleware/client?path=${publicPath}__webpack_hmr`,
         'webpack/hot/only-dev-server',
         path.join(__dirname, 'frontend-main.js')
       ],
